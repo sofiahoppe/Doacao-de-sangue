@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('img/fundos.jpg');
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #b22222;
+        }
+
+        form label {
+            display: block;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        form input[type="text"],
+        form input[type="number"],
+        form select,
+        form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        form textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #b22222;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Doação de Sangue</h1>
+        <form id="bloodTestForm">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="age">Idade:</label>
+            <input type="number" id="age" name="age" required min="16" max="60">
+
+            <label for="bloodType">Tipo de Sangue:</label>
+            <select id="bloodType" name="bloodType" required>
+                <option value="">Selecione...</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select>
+
+            <label>Possui alguma doença?</label>
+            <div class="radio-group">
+                <label><input type="radio" name="disease" value="sim" required> Sim</label>
+                <label><input type="radio" name="disease" value="não" required> Não</label>
+            </div>
+
+            <label>Já usou alguma droga?</label>
+            <div class="radio-group">
+                <label><input type="radio" name="drugs" value="sim" required> Sim</label>
+                <label><input type="radio" name="drugs" value="não" required> Não</label>
+            </div>
+
+            <button type="button" onclick="checkEligibility()">Enviar</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function checkEligibility() {
+            // Obtém os valores dos campos
+            const name = document.getElementById('name').value;
+            const age = parseInt(document.getElementById('age').value, 10);
+            const bloodType = document.getElementById('bloodType').value;
+            const disease = document.querySelector('input[name="disease"]:checked').value;
+            const drugs = document.querySelector('input[name="drugs"]:checked').value;
+            
+            // Variável para armazenar o resultado
+            let resultText = "";
+
+            // Verifica a idade
+            if (age < 18 || age > 60) {
+                resultText += "Você não está na faixa etária para doação de sangue.<br>";
+            }
+            
+            // Verifica doenças e uso de drogas
+            if (disease === "sim" || drugs === "sim") {
+                resultText += "Você não é elegível para doação de sangue devido a problemas de saúde ou uso de drogas.<br>";
+            }
+            
+            // Se não houver nenhum motivo para não doar
+            if (resultText === "") {
+                resultText = "Parabéns, " + name + "! Você é elegível para doar sangue.";
+            }
+            
+            // Exibe o resultado na div com id 'result'
+            document.getElementById('result').innerHTML = resultText;
+        }
+    </script>
+</body>
+</html>
